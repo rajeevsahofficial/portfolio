@@ -296,6 +296,12 @@ export default function Home() {
     transparent 68%
   )`;
 
+  if (!mounted) {
+    return (
+      <main className="relative overflow-hidden bg-[#070707] text-[#f2eee7]" />
+    );
+  }
+
   return (
     <main className="relative overflow-hidden bg-[#070707] text-[#f2eee7]">
       <LuxuryCursor />
