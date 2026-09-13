@@ -28,6 +28,11 @@ a {
   text-decoration: none;
 }
 
+/* Offset all anchor targets below the fixed header (~80px pill height) */
+[id] {
+  scroll-margin-top: 90px;
+}
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;
