@@ -11,11 +11,11 @@ import {
 import MagneticButton from "@/components/home/shared/MagneticButton";
 
 const navLinks = [
-  { label: "About",      href: "#about"      },
-  { label: "Work",       href: "#work"        },
-  { label: "Experience", href: "#experience"  },
-  { label: "Skills",     href: "#skills"      },
-  { label: "Contact",    href: "#contact"     },
+  { label: "About", href: "#about" },
+  { label: "Work", href: "#work" },
+  { label: "Experience", href: "#experience" },
+  { label: "Skills", href: "#skills" },
+  { label: "Contact", href: "#contact" },
 ];
 
 /* ─── thin horizontal line that underscores the active link ─── */
@@ -30,10 +30,10 @@ function NavUnderline() {
 }
 
 export default function Header() {
-  const [mounted,       setMounted]       = useState(false);
-  const [menuOpen,      setMenuOpen]      = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-  const [scrolled,      setScrolled]      = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   /* scroll-progress bar */
   const { scrollYProgress } = useScroll();
@@ -45,14 +45,14 @@ export default function Header() {
 
   /* magnetic logo */
   const logoRef = useRef<HTMLAnchorElement>(null);
-  const logoX   = useMotionValue(0);
-  const logoY   = useMotionValue(0);
+  const logoX = useMotionValue(0);
+  const logoY = useMotionValue(0);
 
   const onLogoMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const bounds = logoRef.current?.getBoundingClientRect();
     if (!bounds) return;
-    logoX.set((e.clientX - bounds.left - bounds.width  / 2) * 0.14);
-    logoY.set((e.clientY - bounds.top  - bounds.height / 2) * 0.14);
+    logoX.set((e.clientX - bounds.left - bounds.width / 2) * 0.14);
+    logoY.set((e.clientY - bounds.top - bounds.height / 2) * 0.14);
   };
   const onLogoLeave = () => { logoX.set(0); logoY.set(0); };
 
@@ -207,7 +207,7 @@ export default function Header() {
                 "
               >
                 <motion.span
-                  animate={menuOpen ? { rotate: 45, y: 5 }  : { rotate: 0, y: 0 }}
+                  animate={menuOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
                   transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                   className="h-px w-[18px] bg-[#f2eee7]"
                 />
@@ -241,20 +241,6 @@ export default function Header() {
           >
             {/* inner scroll container — starts below the header pill (~72px) */}
             <div className="flex h-full flex-col overflow-y-auto pt-[72px]">
-
-              {/* top meta strip */}
-              <div className="flex items-center justify-between border-b border-white/[0.07] px-6 py-4">
-                <span className="text-[10px] uppercase tracking-[0.35em] text-[#c7a7ff]">
-                  Navigation
-                </span>
-                <button
-                  onClick={() => setMenuOpen(false)}
-                  aria-label="Close menu"
-                  className="text-[10px] uppercase tracking-[0.28em] text-white/30 transition-colors hover:text-white/70"
-                >
-                  Close ✕
-                </button>
-              </div>
 
               {/* nav list */}
               <nav className="flex flex-1 flex-col px-6">
