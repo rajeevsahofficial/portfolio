@@ -6,8 +6,8 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import MagneticButton from "@/components/home/shared/MagneticButton";
 
 const socials = [
-  { label: "GitHub",   icon: FaGithub,  href: "#",                              handle: "github.com/rajeev" },
-  { label: "LinkedIn", icon: FaLinkedin, href: "#",                              handle: "linkedin.com/in/rajeev" },
+  { label: "GitHub",   icon: FaGithub,  href: "https://github.com/rajeevkrsah",                              handle: "github.com/rajeevkrsah" },
+  { label: "LinkedIn", icon: FaLinkedin, href: "https://www.linkedin.com/in/the-rajeev-sah",                              handle: "linkedin.com/in/the-rajeev-sah" },
   { label: "Email",    icon: Mail,       href: "mailto:rajeev855107@gmail.com",  handle: "rajeev855107@gmail.com" },
 ];
 

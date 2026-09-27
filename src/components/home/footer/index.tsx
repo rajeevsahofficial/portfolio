@@ -26,14 +26,14 @@ export default function Footer() {
           {/* center — socials */}
           <div className="flex items-center gap-5">
             <a
-              href="#"
+              href="https://github.com/rajeevkrsah"
               aria-label="GitHub"
               className="text-white/25 transition-colors duration-200 hover:text-white/65"
             >
               <FaGithub size={16} />
             </a>
             <a
-              href="#"
+              href="https://www.linkedin.com/in/the-rajeev-sah"
               aria-label="LinkedIn"
               className="text-white/25 transition-colors duration-200 hover:text-white/65"
             >
