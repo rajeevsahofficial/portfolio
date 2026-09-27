@@ -30,7 +30,6 @@ function NavUnderline() {
 }
 
 export default function Header() {
-  const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [scrolled, setScrolled] = useState(false);
@@ -57,8 +56,6 @@ export default function Header() {
   const onLogoLeave = () => { logoX.set(0); logoY.set(0); };
 
   useEffect(() => {
-    setMounted(true);
-
     /* ── scroll progress + pill background ── */
     const onScroll = () => setScrolled(window.scrollY > 48);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -96,8 +93,6 @@ export default function Header() {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
-
-  if (!mounted) return null;
 
   return (
     <>

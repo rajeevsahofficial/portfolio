@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "./globals.css";
+import Header from "@/components/header";
+import LuxuryCursor from "@/components/common/LuxuryCursor";
+import Footer from "@/components/footer";
 
 /* =========================================================
    FONTS
@@ -439,8 +442,10 @@ export default function RootLayout({
         {/* =================================================
             APPLICATION
         ================================================= */}
-
+        <LuxuryCursor />
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

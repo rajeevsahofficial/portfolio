@@ -33,19 +33,6 @@ type Tool = {
   label: string;
   color: string;
   icon: React.ReactNode;
-
-  /*
-    Coordinates are percentages of the orbit container.
-
-    50 / 0       = top
-    85 / 15      = top-right
-    100 / 50     = right
-    85 / 85      = bottom-right
-    50 / 100     = bottom
-    15 / 85      = bottom-left
-    0 / 50       = left
-    15 / 15      = top-left
-  */
   x: number;
   y: number;
 };
@@ -63,7 +50,6 @@ const tools: Tool[] = [
     x: 50,
     y: 0,
   },
-
   {
     name: "Laravel",
     label: "LARAVEL",
@@ -72,7 +58,6 @@ const tools: Tool[] = [
     x: 85,
     y: 15,
   },
-
   {
     name: "MySQL",
     label: "MYSQL",
@@ -81,7 +66,6 @@ const tools: Tool[] = [
     x: 100,
     y: 50,
   },
-
   {
     name: "PHP",
     label: "PHP",
@@ -90,7 +74,6 @@ const tools: Tool[] = [
     x: 85,
     y: 85,
   },
-
   {
     name: "Google Ads",
     label: "GOOGLE ADS",
@@ -99,7 +82,6 @@ const tools: Tool[] = [
     x: 50,
     y: 100,
   },
-
   {
     name: "Meta Ads",
     label: "META ADS",
@@ -108,7 +90,6 @@ const tools: Tool[] = [
     x: 15,
     y: 85,
   },
-
   {
     name: "Node.js",
     label: "NODE.JS",
@@ -117,7 +98,6 @@ const tools: Tool[] = [
     x: 0,
     y: 50,
   },
-
   {
     name: "React",
     label: "REACT",
@@ -145,6 +125,7 @@ function OrbitRing({
 }) {
   return (
     <motion.div
+      aria-hidden="true"
       animate={{
         rotate: reverse ? -360 : 360,
       }}
@@ -153,24 +134,15 @@ function OrbitRing({
         repeat: Infinity,
         ease: "linear",
       }}
-      className={`
-        absolute
-        left-1/2
-        top-1/2
-        -translate-x-1/2
-        -translate-y-1/2
-        rounded-full
-        ${dashed
-          ? "border border-dashed border-white/[0.065]"
-          : "border border-white/[0.075]"
-        }
-      `}
+      className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full ${dashed
+        ? "border border-dashed border-white/[0.065]"
+        : "border border-white/[0.075]"
+        }`}
       style={{
         width: size,
         height: size,
       }}
     >
-      {/* orbit point */}
       <span
         className="
           absolute
@@ -204,7 +176,7 @@ function ToolNode({
     <motion.div
       initial={{
         opacity: 0,
-        scale: 0.55,
+        scale: 0.5,
       }}
       animate={{
         opacity: 1,
@@ -212,7 +184,7 @@ function ToolNode({
       }}
       transition={{
         duration: 0.7,
-        delay: 0.8 + index * 0.08,
+        delay: 0.7 + index * 0.08,
         ease: [0.16, 1, 0.3, 1],
       }}
       className="
@@ -237,13 +209,30 @@ function ToolNode({
           delay: index * 0.15,
         }}
         whileHover={{
-          scale: 1.1,
+          scale: 1.12,
         }}
         className="group relative"
       >
-        {/* =================================================
-            ICON CIRCLE
-        ================================================= */}
+        {/* Glow */}
+
+        <div
+          className="
+            pointer-events-none
+            absolute
+            -inset-4
+            rounded-full
+            opacity-0
+            blur-xl
+            transition-opacity
+            duration-500
+            group-hover:opacity-40
+          "
+          style={{
+            backgroundColor: tool.color,
+          }}
+        />
+
+        {/* Icon */}
 
         <div
           className="
@@ -267,24 +256,6 @@ function ToolNode({
             md:w-12
           "
         >
-          {/* hover glow */}
-          <div
-            className="
-              absolute
-              inset-0
-              rounded-full
-              opacity-0
-              blur-xl
-              transition-opacity
-              duration-300
-              group-hover:opacity-30
-            "
-            style={{
-              backgroundColor: tool.color,
-            }}
-          />
-
-          {/* icon */}
           <span
             className="
               relative
@@ -306,9 +277,7 @@ function ToolNode({
           </span>
         </div>
 
-        {/* =================================================
-            LABEL
-        ================================================= */}
+        {/* Label */}
 
         <div
           className="
@@ -355,11 +324,13 @@ export default function Hero() {
   const smoothX = useSpring(mouseX, {
     stiffness: 70,
     damping: 25,
+    mass: 0.5,
   });
 
   const smoothY = useSpring(mouseY, {
     stiffness: 70,
     damping: 25,
+    mass: 0.5,
   });
 
   const visualX = useTransform(
@@ -374,41 +345,6 @@ export default function Hero() {
     [-12, 12]
   );
 
-  const glowX = useTransform(
-    smoothX,
-    [-500, 500],
-    [-30, 30]
-  );
-
-  const glowY = useTransform(
-    smoothY,
-    [-500, 500],
-    [-30, 30]
-  );
-
-  /* =======================================================
-     TIME
-  ======================================================= */
-
-  useEffect(() => {
-    const updateTime = () => {
-      const current = new Intl.DateTimeFormat("en-IN", {
-        timeZone: "Asia/Kolkata",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      }).format(new Date());
-
-      setTime(current);
-    };
-
-    updateTime();
-
-    const interval = setInterval(updateTime, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   /* =======================================================
      MOUSE
   ======================================================= */
@@ -416,17 +352,20 @@ export default function Hero() {
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       mouseX.set(
-        event.clientX - window.innerWidth / 2
+        event.clientX -
+        window.innerWidth / 2
       );
 
       mouseY.set(
-        event.clientY - window.innerHeight / 2
+        event.clientY -
+        window.innerHeight / 2
       );
     };
 
     window.addEventListener(
       "mousemove",
-      handleMouseMove
+      handleMouseMove,
+      { passive: true }
     );
 
     return () => {
@@ -437,13 +376,10 @@ export default function Hero() {
     };
   }, [mouseX, mouseY]);
 
-  /* =======================================================
-     RETURN
-  ======================================================= */
-
   return (
     <section
       id="home"
+      aria-label="Introduction"
       className="
         relative
         min-h-screen
@@ -452,10 +388,21 @@ export default function Hero() {
         text-white
       "
     >
-      {/* BACKGROUND  */}
+      {/* =====================================================
+          BACKGROUND
+      ===================================================== */}
 
-      <div className="pointer-events-none absolute inset-0">
-        {/* grid */}
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          overflow-hidden
+        "
+      >
+        {/* Grid */}
+
         <div
           className="
             absolute
@@ -469,7 +416,11 @@ export default function Hero() {
           }}
         />
       </div>
-      {/* Main  */}
+
+      {/* =====================================================
+          MAIN
+      ===================================================== */}
+
       <div
         className="
           relative
@@ -477,13 +428,11 @@ export default function Hero() {
           mx-auto
           flex
           min-h-screen
-          max-w-[1600px]
+          max-w-[1500px]
           items-center
           px-5
           pb-16
-          pt-28
-
-          sm:px-7
+          pt-20
 
           md:px-10
           md:pt-32
@@ -497,7 +446,7 @@ export default function Hero() {
             grid
             w-full
             items-center
-            gap-14
+            gap-16
 
             lg:grid-cols-[0.9fr_1fr]
             lg:gap-4
@@ -507,7 +456,7 @@ export default function Hero() {
           "
         >
           {/* =================================================
-              LEFT
+              LEFT CONTENT
           ================================================= */}
 
           <div
@@ -518,33 +467,60 @@ export default function Hero() {
               lg:max-w-none
             "
           >
-            {/* heading */}
+            {/* Heading */}
+
             <div className="overflow-hidden">
-              <h2 className="max-w-5xl text-[clamp(3.5rem,7vw,8rem)] font-medium leading-[0.9] tracking-[-0.06em]">
+              <motion.h1
+                initial={{
+                  opacity: 0,
+                  y: 50,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                transition={{
+                  duration: 1,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="
+                  max-w-5xl
+                  text-[clamp(3.4rem,7vw,8rem)]
+                  font-medium
+                  leading-[0.88]
+                  tracking-[-0.065em]
+                "
+              >
                 Creating
                 <br />
-                <span className="text-white/22">Digital</span>
+
+                <span className="text-white/20">
+                  Digital
+                </span>
+
                 <br />
+
                 Experiences
-              </h2>
+              </motion.h1>
             </div>
 
-            {/* description */}
+            {/* Description */}
+
             <motion.p
               initial={{
                 opacity: 0,
-                y: 20,
+                y: 25,
               }}
               animate={{
                 opacity: 1,
                 y: 0,
               }}
               transition={{
-                delay: 0.7,
+                delay: 0.45,
                 duration: 0.8,
               }}
               className="
-                mt-8
+                mt-5
                 max-w-lg
                 text-[12px]
                 leading-7
@@ -555,13 +531,142 @@ export default function Hero() {
                 md:leading-8
               "
             >
-              I build scalable web applications,
-              refined user experiences and digital
-              systems that connect technology with
-              real business growth.
+              I design and engineer digital products,
+              scalable web applications and growth
+              systems that turn complex ideas into
+              meaningful experiences.
             </motion.p>
 
-            {/* buttons */}
+            {/* Actions */}
+
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                delay: 0.65,
+                duration: 0.8,
+              }}
+              className="
+                mt-9
+                flex
+                flex-wrap
+                items-center
+                gap-7
+              "
+            >
+              {/* Work */}
+
+              <Link
+                href="#work"
+                data-cursor="VIEW"
+                className="
+                  group
+                  relative
+                  flex
+                  items-center
+                  gap-4
+                  overflow-hidden
+                  rounded-full
+                  border
+                  border-white/[0.12]
+                  bg-white/[0.04]
+                  px-6
+                  py-3.5
+                  text-[8px]
+                  uppercase
+                  tracking-[0.28em]
+                  text-white/70
+                  transition-all
+                  duration-500
+
+                  hover:border-[#c7a7ff]/40
+                  hover:bg-white/[0.07]
+                  hover:text-white
+
+                  focus-visible:outline-none
+                  focus-visible:ring-2
+                  focus-visible:ring-[#c7a7ff]/50
+                "
+              >
+                <span className="relative z-10">
+                  Explore work
+                </span>
+
+                <ArrowUpRight
+                  size={13}
+                  className="
+                    relative
+                    z-10
+                    text-[#c7a7ff]
+                    transition-transform
+                    duration-500
+                    group-hover:translate-x-1
+                    group-hover:-translate-y-1
+                  "
+                />
+
+                <span
+                  className="
+                    absolute
+                    inset-0
+                    -translate-x-full
+                    bg-gradient-to-r
+                    from-transparent
+                    via-white/[0.06]
+                    to-transparent
+                    transition-transform
+                    duration-700
+                    group-hover:translate-x-full
+                  "
+                />
+              </Link>
+
+              {/* Email */}
+
+              <a
+                href="mailto:rajeev855107@gmail.com"
+                data-cursor="EMAIL"
+                className="
+                  group
+                  flex
+                  items-center
+                  gap-3
+                  text-[8px]
+                  uppercase
+                  tracking-[0.28em]
+                  text-white/25
+                  transition-colors
+                  duration-300
+                  hover:text-white/70
+
+                  focus-visible:outline-none
+                  focus-visible:ring-2
+                  focus-visible:ring-[#c7a7ff]/40
+                "
+              >
+                <Mail
+                  size={12}
+                  className="
+                    transition-transform
+                    duration-300
+                    group-hover:-translate-y-0.5
+                  "
+                />
+
+                Let's talk
+              </a>
+            </motion.div>
+
+            {/* =================================================
+                STATS
+            ================================================= */}
+
             <motion.div
               initial={{
                 opacity: 0,
@@ -576,91 +681,111 @@ export default function Hero() {
                 duration: 0.8,
               }}
               className="
-                mt-8
-                flex
-                flex-wrap
-                items-center
-                gap-6
+                mt-12
+                grid
+                max-w-lg
+                grid-cols-3
+                border-y
+                border-white/[0.07]
+                py-5
               "
             >
-              <Link
-                href="#work"
-                className="
-                  group
-                  flex
-                  items-center
-                  gap-4
-                  border-b
-                  border-[#c7a7ff]/50
-                  pb-3
-                  text-[8px]
-                  uppercase
-                  tracking-[0.3em]
-                  text-white/65
-                  transition-colors
-                  hover:text-white
-                "
-              >
-                Explore my work
+              {/* Experience */}
 
-                <ArrowUpRight
-                  size={14}
+              <div>
+                <span
                   className="
-                    text-[#c7a7ff]
-                    transition-transform
-                    duration-300
-                    group-hover:translate-x-1
-                    group-hover:-translate-y-1
+                    block
+                    text-xl
+                    tracking-[-0.04em]
+                    text-white/80
                   "
-                />
-              </Link>
+                >
+                  3+
+                </span>
 
-              <a
-                href="mailto:rajeev855107@gmail.com"
+                <span
+                  className="
+                    mt-1
+                    block
+                    text-[7px]
+                    uppercase
+                    tracking-[0.25em]
+                    text-white/25
+                  "
+                >
+                  Years Experience
+                </span>
+              </div>
+
+              {/* Projects */}
+
+              <div
                 className="
-                  flex
-                  items-center
-                  gap-2
-                  text-[8px]
-                  uppercase
-                  tracking-[0.3em]
-                  text-white/25
-                  transition-colors
-                  hover:text-white/60
+                  border-l
+                  border-white/[0.07]
+                  pl-5
                 "
               >
-                <Mail size={11} />
-
-                Let's talk
-              </a>
-            </motion.div>
-
- 
-        {/* ── technology strip ── */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.1, duration: 0.8 }}
-              className="mt-10 hidden items-center gap-0 md:flex"
-            >
-              {[
-                { label: "React",   dot: true  },
-                { label: "Next.js", dot: true  },
-                { label: "Laravel", dot: true  },
-                { label: "APIs",    dot: true  },
-                { label: "Growth",  dot: false },
-              ].map(({ label, dot }) => (
-                <span key={label} className="flex items-center">
-                  <span className="text-[9px] uppercase tracking-[0.28em] text-white/20 transition-colors duration-200 hover:text-white/50">
-                    {label}
-                  </span>
-                  {dot && (
-                    <span className="mx-3 h-[3px] w-[3px] rounded-full bg-white/[0.12]" />
-                  )}
+                <span
+                  className="
+                    block
+                    text-xl
+                    tracking-[-0.04em]
+                    text-white/80
+                  "
+                >
+                  20+
                 </span>
-              ))}
+
+                <span
+                  className="
+                    mt-1
+                    block
+                    text-[7px]
+                    uppercase
+                    tracking-[0.25em]
+                    text-white/25
+                  "
+                >
+                  Digital Projects
+                </span>
+              </div>
+
+              {/* Curiosity */}
+
+              <div
+                className="
+                  border-l
+                  border-white/[0.07]
+                  pl-5
+                "
+              >
+                <span
+                  className="
+                    block
+                    text-xl
+                    tracking-[-0.04em]
+                    text-white/80
+                  "
+                >
+                  ∞
+                </span>
+
+                <span
+                  className="
+                    mt-1
+                    block
+                    text-[7px]
+                    uppercase
+                    tracking-[0.25em]
+                    text-white/25
+                  "
+                >
+                  Curiosity
+                </span>
+              </div>
             </motion.div>
-            
           </div>
 
           {/* =================================================
@@ -677,7 +802,7 @@ export default function Hero() {
               mx-auto
               aspect-square
               w-full
-              max-w-[380px]
+              max-w-[360px]
 
               sm:max-w-[430px]
 
@@ -688,12 +813,7 @@ export default function Hero() {
               xl:max-w-[560px]
             "
           >
-            {/* ===============================================
-                ORBIT CONTAINER
-
-                All tool coordinates are percentages of this
-                container. This guarantees alignment.
-            =============================================== */}
+            {/* Orbit container */}
 
             <div
               className="
@@ -701,13 +821,11 @@ export default function Hero() {
                 inset-[5%]
               "
             >
-              {/* outer orbit */}
               <OrbitRing
                 size="100%"
                 duration={32}
               />
 
-              {/* dashed orbit */}
               <OrbitRing
                 size="78%"
                 duration={24}
@@ -715,13 +833,11 @@ export default function Hero() {
                 dashed
               />
 
-              {/* inner orbit */}
               <OrbitRing
                 size="57%"
                 duration={18}
               />
 
-              {/* center orbit */}
               <OrbitRing
                 size="38%"
                 duration={13}
@@ -729,66 +845,9 @@ export default function Hero() {
               />
             </div>
 
-            {/* ===============================================
-                DECORATIVE PARTICLES
-            =============================================== */}
-
-            <motion.div
-              animate={{
-                rotate: 360,
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              className="
-                absolute
-                inset-[4%]
-              "
-            >
-              <span
-                className="
-                  absolute
-                  left-1/2
-                  top-0
-                  h-1
-                  w-1
-                  -translate-x-1/2
-                  rounded-full
-                  bg-white/50
-                "
-              />
-
-              <span
-                className="
-                  absolute
-                  bottom-[10%]
-                  right-[15%]
-                  h-1
-                  w-1
-                  rounded-full
-                  bg-[#c7a7ff]
-                  shadow-[0_0_10px_#c7a7ff]
-                "
-              />
-
-              <span
-                className="
-                  absolute
-                  left-[12%]
-                  top-[70%]
-                  h-1
-                  w-1
-                  rounded-full
-                  bg-white/30
-                "
-              />
-            </motion.div>
-
-            {/* ===============================================
+            {/* =================================================
                 CENTER
-            =============================================== */}
+            ================================================= */}
 
             <div
               className="
@@ -800,8 +859,10 @@ export default function Hero() {
                 -translate-y-1/2
               "
             >
-              {/* center glow */}
+              {/* Glow */}
+
               <motion.div
+                aria-hidden="true"
                 animate={{
                   scale: [1, 1.08, 1],
                   opacity: [0.12, 0.25, 0.12],
@@ -822,13 +883,20 @@ export default function Hero() {
                 "
               />
 
-              {/* center circle */}
-              <div
+              {/* Center */}
+
+              <motion.div
+                whileHover={{
+                  scale: 1.015,
+                }}
+                transition={{
+                  duration: 0.5,
+                }}
                 className="
                   relative
                   flex
-                  h-[150px]
-                  w-[150px]
+                  h-[145px]
+                  w-[145px]
                   items-center
                   justify-center
                   rounded-full
@@ -851,9 +919,12 @@ export default function Hero() {
                   xl:w-[220px]
                 "
               >
-                {/* inner border */}
+                {/* Inner border */}
+
                 <div
                   className="
+                    hidden
+                    md:block
                     absolute
                     inset-8
                     rounded-full
@@ -862,8 +933,10 @@ export default function Hero() {
                   "
                 />
 
-                {/* rotating highlight */}
+                {/* Rotating highlight */}
+
                 <motion.div
+                  aria-hidden="true"
                   animate={{
                     rotate: 360,
                   }}
@@ -873,6 +946,7 @@ export default function Hero() {
                     ease: "linear",
                   }}
                   className="
+                    pointer-events-none
                     absolute
                     inset-[-1px]
                     rounded-full
@@ -893,7 +967,8 @@ export default function Hero() {
                   />
                 </motion.div>
 
-                {/* center content */}
+                {/* Center content */}
+
                 <div
                   className="
                     relative
@@ -901,11 +976,30 @@ export default function Hero() {
                     text-center
                   "
                 >
-                  <span className="block text-[9px] uppercase tracking-[0.3em] text-white/30">
+                  <span
+                    className="
+                      block
+                      text-[8px]
+                      uppercase
+                      tracking-[0.3em]
+                      text-white/30
+
+                      sm:text-[9px]
+                    "
+                  >
                     Building
                   </span>
 
-                  <span className="mt-1 block text-xs text-white/60">
+                  <span
+                    className="
+                      mt-1
+                      block
+                      text-[11px]
+                      text-white/60
+
+                      sm:text-xs
+                    "
+                  >
                     Digital Systems
                   </span>
 
@@ -922,9 +1016,8 @@ export default function Hero() {
                     "
                   />
 
-                  <p
+                  <div
                     className="
-                      block
                       text-[6px]
                       uppercase
                       tracking-[0.3em]
@@ -933,16 +1026,27 @@ export default function Hero() {
                       sm:text-[7px]
                     "
                   >
-                    <span className="block text-[9px] uppercase tracking-[0.3em] text-white/30"> Full Stack</span>
+                    <span
+                      className="
+                        block
+                        text-[8px]
+                        text-white/30
+
+                        sm:text-[9px]
+                      "
+                    >
+                      Full Stack
+                    </span>
+
                     Developer
-                  </p>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
-            {/* ===============================================
+            {/* =================================================
                 TOOL NODES
-            =============================================== */}
+            ================================================= */}
 
             {tools.map((tool, index) => (
               <ToolNode

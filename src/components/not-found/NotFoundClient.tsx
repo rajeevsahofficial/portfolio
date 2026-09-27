@@ -2,70 +2,18 @@
 
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Home } from "lucide-react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import { useEffect, useState } from "react";
-import LuxuryCursor from "@/components/common/LuxuryCursor";
-
+import { motion } from "framer-motion"
 export default function NotFoundClient() {
-  const [mounted, setMounted] = useState(false);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const smoothX = useSpring(mouseX, { stiffness: 80, damping: 20, mass: 0.6 });
-  const smoothY = useSpring(mouseY, { stiffness: 80, damping: 20, mass: 0.6 });
-
-  const moveX = useTransform(smoothX, [-500, 500], [-25, 25]);
-  const moveY = useTransform(smoothY, [-500, 500], [-20, 20]);
-
-  useEffect(() => {
-    setMounted(true);
-    const handle = (e: MouseEvent) => {
-      mouseX.set(e.clientX - window.innerWidth  / 2);
-      mouseY.set(e.clientY - window.innerHeight / 2);
-    };
-    window.addEventListener("mousemove", handle);
-    return () => window.removeEventListener("mousemove", handle);
-  }, [mouseX, mouseY]);
-
-  if (!mounted) {
-    return <main className="relative min-h-screen overflow-hidden bg-[#070707] text-[#f2eee7]" />;
-  }
 
   return (
     <main
       data-cursor="LOST?"
       className="relative flex min-h-screen flex-col overflow-hidden bg-[#070707] text-[#f2eee7]"
     >
-      <LuxuryCursor />
-
-      {/* ambient glow */}
-      {mounted && (
-        <motion.div
-          style={{ x: moveX, y: moveY }}
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#c7a7ff]/[0.07] blur-[140px]"
-        />
-      )}
-
       {/* grid */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.22]">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.025)_1px,transparent_1px)] bg-[size:76px_76px]" />
       </div>
-
-      {/* nav */}
-      <header className="relative z-20 flex items-center justify-between px-6 py-7 md:px-10">
-        <Link href="/" className="text-sm font-semibold tracking-[-0.02em]">
-          RAJEEV KUMAR
-        </Link>
-        <p className="hidden text-[10px] uppercase tracking-[0.3em] text-white/25 md:block">
-          Error / 404
-        </p>
-      </header>
 
       {/* main content */}
       <section className="relative z-10 flex flex-1 items-center">
@@ -140,20 +88,6 @@ export default function NotFoundClient() {
           </div>
         </div>
       </section>
-
-      {/* footer */}
-      <motion.footer
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.8 }}
-        className="relative z-20 shrink-0 px-6 pb-7 md:px-10 md:pb-8"
-      >
-        <div className="mx-auto flex max-w-[1500px] flex-col justify-between gap-4 border-t border-white/[0.06] pt-7 text-[9px] uppercase tracking-[0.25em] text-white/20 md:flex-row">
-          <span>Lost in the digital space</span>
-          <span>Rajeev Kumar © 2026</span>
-          <span>Purnia / Bihar / India</span>
-        </div>
-      </motion.footer>
     </main>
   );
 }

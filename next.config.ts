@@ -1,96 +1,135 @@
 import type { NextConfig } from "next";
 
-const SITE_URL = "https://rajeevkumar.dev"; // ← update once deployed
+const SITE_URL = "https://rajeevkrsah.vercel.app";
 
-/* ─────────────────────────────────────────────────────────────
-   Security & SEO headers applied to every response
-───────────────────────────────────────────────────────────── */
+/*
+ * Security & SEO headers
+ */
 const securityHeaders = [
-  /* Prevent clickjacking */
-  { key: "X-Frame-Options",           value: "SAMEORIGIN" },
-
-  /* Prevent MIME-type sniffing */
-  { key: "X-Content-Type-Options",    value: "nosniff" },
-
-  /* Force HTTPS for 1 year, include subdomains */
-  { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },
-
-  /* Disable referrer on cross-origin navigation */
-  { key: "Referrer-Policy",           value: "strict-origin-when-cross-origin" },
-
-  /* Permissions policy — disable unused APIs */
+  // Prevent clickjacking
   {
-    key:   "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    key: "X-Frame-Options",
+    value: "SAMEORIGIN",
   },
 
-  /* Content Security Policy — tight for a static portfolio */
+  // Prevent MIME-type sniffing
   {
-    key:   "Content-Security-Policy",
+    key: "X-Content-Type-Options",
+    value: "nosniff",
+  },
+
+  // Force HTTPS for 1 year
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=31536000; includeSubDomains; preload",
+  },
+
+  // Referrer policy
+  {
+    key: "Referrer-Policy",
+    value: "strict-origin-when-cross-origin",
+  },
+
+  // Permissions policy
+  {
+    key: "Permissions-Policy",
+    value:
+      "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+  },
+
+  // Content Security Policy
+  {
+    key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",  // unsafe-eval needed for Framer Motion
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
       "connect-src 'self'",
-      "frame-ancestors 'none'",
+      "frame-ancestors 'self'",
       "base-uri 'self'",
       "form-action 'self'",
     ].join("; "),
   },
 
-  /* X-DNS-Prefetch-Control */
-  { key: "X-DNS-Prefetch-Control",    value: "on" },
+  // DNS prefetch
+  {
+    key: "X-DNS-Prefetch-Control",
+    value: "on",
+  },
 ];
 
 const nextConfig: NextConfig = {
-  reactCompiler: true,
-
-  /* ── compress all responses ── */
+  /*
+   * Compress responses
+   */
   compress: true,
 
-  /* ── remove trailing slashes for canonical URLs ── */
+  /*
+   * Canonical URLs without trailing slash
+   */
   trailingSlash: false,
 
-  /* ── powered-by header leaks tech stack ── */
+  /*
+   * Hide Next.js powered-by header
+   */
   poweredByHeader: false,
 
-  /* ── strict mode for better hydration error detection ── */
+  /*
+   * Better hydration error detection
+   */
   reactStrictMode: true,
 
-  /* ── security & SEO headers ── */
+  /*
+   * Security headers
+   */
   async headers() {
     return [
       {
-        source:  "/(.*)",
+        source: "/(.*)",
         headers: securityHeaders,
       },
-      /* Cache static assets aggressively */
+
+      /*
+       * IMPORTANT:
+       * Do NOT manually add Cache-Control to /_next/static
+       * in development.
+       *
+       * Next.js/Turbopack manages these files itself.
+       */
+
+      /*
+       * Cache public images for 1 day.
+       */
       {
-        source:  "/_next/static/(.*)",
+        source: "/images/(.*)",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      /* Cache images */
-      {
-        source:  "/images/(.*)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" },
+          {
+            key: "Cache-Control",
+            value:
+              "public, max-age=86400, stale-while-revalidate=604800",
+          },
         ],
       },
     ];
   },
 
-  /* ── www → non-www canonical redirect ── */
+  /*
+   * www → non-www canonical redirect
+   */
   async redirects() {
     return [
       {
-        source:      "/:path*",
-        has:         [{ type: "host", value: `www.rajeevkumar.dev` }],
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "www.rajeevkumar.dev",
+          },
+        ],
         destination: `${SITE_URL}/:path*`,
-        permanent:   true,   // 308 — SEO-safe permanent redirect
+        permanent: true,
       },
     ];
   },
