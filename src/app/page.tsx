@@ -18,7 +18,7 @@ import Skills from "@/components/home/skills";
 import Expertise from "@/components/home/expertise";
 import Education from "@/components/home/education";
 import Contact from "@/components/home/contact";
-import Footer from "@/components/home/footer";
+import Footer from "@/components/footer";
 
 export default function Home() {
   const mouseX = useMotionValue(0);
