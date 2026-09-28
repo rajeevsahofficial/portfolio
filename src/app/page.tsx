@@ -8,6 +8,7 @@ import Skills from "@/components/home/skills";
 import Expertise from "@/components/home/expertise";
 import Education from "@/components/home/education";
 import Contact from "@/components/home/contact";
+import FloatingSocials from "@/components/common/FloatingSocials";
 
 export default function Home() {
 
@@ -23,6 +24,7 @@ export default function Home() {
       <Expertise />
       <Education />
       <Contact />
+      <FloatingSocials/>
     </main>
   );
 }

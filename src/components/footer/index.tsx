@@ -1,68 +1,118 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Mail } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { Mail } from "lucide-react";
+
+const socials = [
+  {
+    label: "GitHub",
+    href: "https://github.com/rajeevkrsah",
+    icon: FaGithub,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/the-rajeev-sah",
+    icon: FaLinkedin,
+  },
+  {
+    label: "Email",
+    href: "mailto:rajeev855107@gmail.com",
+    icon: Mail,
+  },
+];
 
 export default function Footer() {
-  const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  const scrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
-    <footer className="relative z-10 border-t border-white/[0.06] px-6 py-10 md:px-10">
+    <footer className="relative z-10 border-t border-white/[0.06] bg-[#050505] px-5 py-8 sm:px-7 md:px-10 md:py-9">
       <div className="mx-auto max-w-[1500px]">
+
+        {/* Main row */}
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
 
-          {/* left — brand + tagline */}
-          <div>
-            <p className="text-sm font-semibold tracking-[-0.02em] text-white/70">
+          {/* Brand */}
+          <div className="group">
+            <p className="text-[13px] font-medium tracking-[-0.02em] text-white/70 transition-colors duration-300 group-hover:text-white">
               RAJEEV KUMAR
             </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-white/22">
-              Software Engineer × Digital Growth
+
+            <p className="mt-2 pl-4 text-[8px] uppercase tracking-[0.28em] text-white/20">
+              Designed & built with intention
             </p>
           </div>
 
-          {/* center — socials */}
-          <div className="flex items-center gap-5">
-            <a
-              href="https://github.com/rajeevkrsah"
-              aria-label="GitHub"
-              className="text-white/25 transition-colors duration-200 hover:text-white/65"
-            >
-              <FaGithub size={16} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/the-rajeev-sah"
-              aria-label="LinkedIn"
-              className="text-white/25 transition-colors duration-200 hover:text-white/65"
-            >
-              <FaLinkedin size={16} />
-            </a>
-            <a
-              href="mailto:rajeev855107@gmail.com"
-              aria-label="Email"
-              className="text-white/25 transition-colors duration-200 hover:text-white/65"
-            >
-              <Mail size={16} />
-            </a>
+          {/* Socials */}
+          <div className="flex items-center gap-2">
+            {socials.map((social) => {
+              const Icon = social.icon;
+
+              return (
+                <motion.a
+                  key={social.label}
+                  href={social.href}
+                  target={
+                    social.href.startsWith("http") ? "_blank" : undefined
+                  }
+                  rel={
+                    social.href.startsWith("http")
+                      ? "noopener noreferrer"
+                      : undefined
+                  }
+                  aria-label={social.label}
+                  data-cursor={social.label.toUpperCase()}
+                  whileHover={{ y: -2 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 18,
+                  }}
+                  className="group flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.07] bg-white/[0.015] text-white/25 transition-all duration-300 hover:border-[#c7a7ff]/25 hover:bg-[#c7a7ff]/[0.06] hover:text-[#c7a7ff]"
+                >
+                  <Icon size={14} />
+
+                  <span className="sr-only">
+                    {social.label}
+                  </span>
+                </motion.a>
+              );
+            })}
           </div>
 
-          {/* right — meta + back to top */}
-          <div className="flex items-center gap-6">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-white/20">
-              © 2026 · Purnia, Bihar
+          {/* Right */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+
+            <p className="text-[8px] uppercase tracking-[0.22em] text-white/20">
+              © 2026 · India
             </p>
+
+            <span className="hidden h-3 w-px bg-white/[0.08] sm:block" />
 
             <motion.button
               onClick={scrollTop}
-              whileHover={{ y: -3 }}
-              transition={{ type: "spring", stiffness: 300, damping: 18 }}
-              className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-white/25 transition-colors duration-200 hover:text-white/60"
+              whileHover={{ y: -2 }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 18,
+              }}
+              className="group flex w-fit items-center gap-2 text-[8px] uppercase tracking-[0.25em] text-white/25 transition-colors duration-300 hover:text-white/70"
               aria-label="Back to top"
             >
-              Back to top
-              <ArrowUpRight size={12} className="-rotate-45" />
+              <span>Back to top</span>
+
+              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-white/[0.07] transition-all duration-300 group-hover:border-[#c7a7ff]/30 group-hover:bg-[#c7a7ff]/[0.06]">
+                <ArrowUpRight
+                  size={10}
+                  className="-rotate-45 transition-transform duration-300 group-hover:-translate-y-0.5"
+                />
+              </span>
             </motion.button>
           </div>
         </div>
