@@ -9,6 +9,7 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import MagneticButton from "@/components/home/shared/MagneticButton";
+import Image from "next/image";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -128,7 +129,7 @@ export default function Header() {
             {/* ── logo ── */}
             <motion.a
               ref={logoRef}
-              href="#"
+              href="/"
               onMouseMove={onLogoMove}
               onMouseLeave={onLogoLeave}
               style={{ x: logoX, y: logoY }}

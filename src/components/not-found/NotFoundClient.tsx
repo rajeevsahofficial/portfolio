@@ -8,7 +8,7 @@ export default function NotFoundClient() {
   return (
     <main
       data-cursor="LOST?"
-      className="relative flex min-h-screen flex-col overflow-hidden bg-[#070707] text-[#f2eee7]"
+      className="relative flex min-h-[70vh] lg:min-h-[84vh] flex-col overflow-hidden bg-[#070707] text-[#f2eee7]"
     >
       {/* grid */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.22]">
@@ -17,21 +17,11 @@ export default function NotFoundClient() {
 
       {/* main content */}
       <section className="relative z-10 flex flex-1 items-center">
-        <div className="mx-auto w-full max-w-[1500px] px-6 pb-14 md:px-10">
+        <div className="mx-auto w-full max-w-[1500px] px-6 pt-20 md:px-10">
           <div className="grid items-end gap-14 lg:grid-cols-[1fr_.38fr]">
 
             {/* left */}
             <div>
-              <div className="mb-8 flex items-center gap-3">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#c7a7ff] opacity-40" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#c7a7ff]" />
-                </span>
-                <span className="text-[10px] uppercase tracking-[0.3em] text-white/30">
-                  Page not found
-                </span>
-              </div>
-
               <motion.h1
                 initial={{ opacity: 0, y: 90 }}
                 animate={{ opacity: 1, y: 0 }}
