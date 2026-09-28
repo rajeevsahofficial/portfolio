@@ -121,8 +121,8 @@ export default function Header() {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="
               mt-4 flex items-center justify-between
-              rounded-2xl border px-5 py-3.5
-              md:px-7 md:py-4
+              rounded-2xl border px-0 py-3.5
+              md:px-0 md:py-4
             "
           >
 
@@ -138,12 +138,7 @@ export default function Header() {
               transition={{ delay: 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="group flex items-center gap-2.5"
             >
-              {/* availability ping */}
-              <span className="relative flex h-[7px] w-[7px] shrink-0">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#8fffbb] opacity-55" />
-                <span className="relative inline-flex h-[7px] w-[7px] rounded-full bg-[#8fffbb]" />
-              </span>
-              <span className="text-[13px] font-semibold tracking-[-0.02em] text-[#f2eee7] transition-opacity duration-300 group-hover:opacity-60">
+              <span className="text-[20px] font-semibold tracking-[-0.02em] text-[#f2eee7] transition-opacity duration-300 group-hover:opacity-60">
                 RAJEEV KUMAR
               </span>
             </motion.a>
@@ -281,13 +276,6 @@ export default function Header() {
                 }}
                 className="flex items-center justify-between border-t border-white/[0.07] px-6 py-8"
               >
-                <div className="flex items-center gap-2.5 text-[10px] uppercase tracking-[0.28em] text-white/35">
-                  <span className="relative flex h-[7px] w-[7px]">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#8fffbb] opacity-55" />
-                    <span className="relative inline-flex h-[7px] w-[7px] rounded-full bg-[#8fffbb]" />
-                  </span>
-                  Available
-                </div>
                 <MagneticButton href="#contact">
                   Let&apos;s talk
                 </MagneticButton>
