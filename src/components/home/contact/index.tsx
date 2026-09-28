@@ -4,26 +4,55 @@ import { motion } from "framer-motion";
 import { Mail, Phone, ArrowUpRight } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import MagneticButton from "@/components/home/shared/MagneticButton";
-
+import { useState } from "react";
+const ease = [0.16, 1, 0.3, 1] as const;
 const socials = [
-  { label: "GitHub",   icon: FaGithub,  href: "https://github.com/rajeevkrsah",                              handle: "github.com/rajeevkrsah" },
-  { label: "LinkedIn", icon: FaLinkedin, href: "https://www.linkedin.com/in/the-rajeev-sah",                              handle: "linkedin.com/in/the-rajeev-sah" },
-  { label: "Email",    icon: Mail,       href: "mailto:rajeev855107@gmail.com",  handle: "rajeev855107@gmail.com" },
+  { label: "GitHub", icon: FaGithub, href: "https://github.com/rajeevkrsah", handle: "github.com/rajeevkrsah" },
+  { label: "LinkedIn", icon: FaLinkedin, href: "https://www.linkedin.com/in/the-rajeev-sah", handle: "linkedin.com/in/the-rajeev-sah" },
+  { label: "Email", icon: Mail, href: "mailto:rajeev855107@gmail.com", handle: "rajeev855107@gmail.com" },
 ];
-
+const contacts = [
+  {
+    id: "01",
+    label: "Email",
+    value: "rajeev855107@gmail.com",
+    href: "mailto:rajeev855107@gmail.com",
+    icon: Mail,
+    external: false,
+  },
+  {
+    id: "02",
+    label: "Phone",
+    value: "+91 9508690371",
+    href: "tel:+919508690371",
+    icon: Phone,
+    external: false,
+  },
+  {
+    id: "03",
+    label: "GitHub",
+    value: "github.com/rajeevkrsah",
+    href: "https://github.com/rajeevkrsah",
+    icon: FaGithub,
+    external: true,
+  },
+  {
+    id: "04",
+    label: "LinkedIn",
+    value: "linkedin.com/in/the-rajeev-sah",
+    href: "https://www.linkedin.com/in/the-rajeev-sah",
+    icon: FaLinkedin,
+    external: true,
+  },
+];
 export default function Contact() {
+  const [activeContact, setActiveContact] = useState("01");
   return (
     <section
       id="contact"
       data-cursor="OPEN"
-      className="relative z-10 overflow-hidden px-6 py-32 md:px-10 md:py-44"
+      className="relative z-10 overflow-hidden px-6 py-28 md:px-10 md:py-44"
     >
-      {/* background glows */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-0 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-[#c7a7ff]/[0.055] blur-[120px]" />
-        <div className="absolute bottom-0 right-0 h-[400px] w-[500px] rounded-full bg-[#c7a7ff]/[0.03] blur-[100px]" />
-      </div>
-
       <div className="relative mx-auto max-w-[1500px]">
 
         {/* section label */}
@@ -69,53 +98,139 @@ export default function Contact() {
           </span>
         </motion.div>
 
-        {/* bottom action row */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-16 grid gap-10 border-t border-white/[0.08] pt-10 lg:grid-cols-[1fr_auto]"
-        >
-          {/* primary CTAs */}
-          <div className="flex flex-wrap gap-3">
-            <MagneticButton light href="mailto:rajeev855107@gmail.com">
-              <Mail size={15} />
-              Start a conversation
-            </MagneticButton>
-            <MagneticButton href="tel:+919508690371">
-              <Phone size={15} />
-              +91 9508690371
-            </MagneticButton>
+        <div className="relative mt-28 grid min-h-[620px] items-center border-t border-white/[0.07] md:mt-40 lg:grid-cols-[1fr_1fr]">
+          {/* left */}
+          <div className="relative z-10 py-20 lg:py-28">
+            <motion.span
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-[8px] uppercase tracking-[0.35em] text-white/20"
+            >
+              Have a project in mind?
+            </motion.span>
+
+            <motion.h3
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.9, ease }}
+              className="mt-6 max-w-2xl text-[clamp(3rem,6vw,6.5rem)] font-medium leading-[0.88] tracking-[-0.07em]"
+            >
+              Build
+              <br />
+              something
+              <br />
+              <span className="text-white/[0.18]">remarkable.</span>
+            </motion.h3>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.35, duration: 0.7 }}
+              className="mt-8 max-w-md text-base leading-8 text-white/38"
+            >
+              From product interfaces to full-stack applications,
+              I&apos;m interested in solving meaningful problems
+              with thoughtful technology.
+            </motion.p>
           </div>
 
-          {/* social links with labels */}
-          <div className="flex flex-col justify-end gap-3">
-            {socials.map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <motion.a
-                  key={s.label}
-                  href={s.href}
-                  initial={{ opacity: 0, x: 16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 + i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  aria-label={s.label}
-                  className="group flex items-center gap-3 text-white/28 transition-colors duration-200 hover:text-white/75"
-                >
-                  <Icon size={15} />
-                  <span className="text-[11px] tracking-[0.04em]">{s.handle}</span>
-                  <ArrowUpRight
-                    size={11}
-                    className="opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </motion.a>
-              );
-            })}
+
+          <div className="">
+            <div className="grid border-t border-white/[0.08] md:grid-cols-2">
+              {contacts.map((contact, index) => {
+                const Icon = contact.icon;
+                const active = activeContact === contact.id;
+
+                return (
+                  <motion.a
+                    key={contact.id}
+                    href={contact.href}
+                    target={contact.external ? "_blank" : undefined}
+                    rel={
+                      contact.external
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                    data-cursor={contact.label.toUpperCase()}
+                    onMouseEnter={() => setActiveContact(contact.id)}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      delay: index * 0.08,
+                      duration: 0.7,
+                      ease,
+                    }}
+                    className="group relative overflow-hidden border-b border-white/[0.08] p-7 transition-colors duration-500 md:p-10 lg:p-12"
+                  >
+                    <motion.div
+                      animate={{
+                        opacity: active ? 1 : 0,
+                      }}
+                      transition={{ duration: 0.4 }}
+                      className="absolute inset-0 bg-[#c7a7ff]/[0.025]"
+                    />
+
+                    <div className="relative flex items-start justify-between">
+                      <div className="flex gap-5">
+                        <span className="font-mono text-[8px] text-white/15">
+                          {contact.id}
+                        </span>
+
+                        <div>
+                          <div className="flex items-center gap-3">
+                            <Icon
+                              size={14}
+                              className="text-white/25 transition-colors group-hover:text-[#c7a7ff]"
+                            />
+
+                            <span className="text-[8px] uppercase tracking-[0.3em] text-white/25">
+                              {contact.label}
+                            </span>
+                          </div>
+
+                          <span className="mt-4 block break-all text-[14px] tracking-[-0.01em] text-white/50 transition-colors duration-300 group-hover:text-white md:text-[16px]">
+                            {contact.value}
+                          </span>
+                        </div>
+                      </div>
+
+                      <ArrowUpRight
+                        size={15}
+                        className="text-white/15 transition-all duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#c7a7ff]"
+                      />
+                    </div>
+
+                    <motion.div
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: active ? 1 : 0 }}
+                      transition={{ duration: 0.5, ease }}
+                      className="absolute bottom-0 left-0 h-px w-full origin-left bg-[#c7a7ff]/60"
+                    />
+                  </motion.a>
+                );
+              })}
+            </div>
+
           </div>
-        </motion.div>
+        </div>
+
       </div>
+      {/* Giant background word */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ opacity: 0, y: 100 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.4, ease }}
+        className="pointer-events-none absolute left-1/2 -bottom-3 lg:-bottom-12 -translate-x-1/2 whitespace-nowrap text-[22vw] font-semibold uppercase leading-none tracking-[-0.09em] text-white/[0.018]"
+      >
+        Contact
+      </motion.div>
     </section>
   );
 }
