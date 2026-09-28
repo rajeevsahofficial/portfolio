@@ -116,14 +116,17 @@ export default function Header() {
               borderColor: scrolled
                 ? "rgba(255,255,255,0.07)"
                 : "rgba(255,255,255,0)",
-              backdropFilter: scrolled ? "blur(18px)" : "blur(0px)",
+              backdropFilter: scrolled
+                ? "blur(18px)"
+                : "blur(0px)",
             }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="
-              mt-4 flex items-center justify-between
-              rounded-2xl border px-0 py-3.5
-              md:px-0 md:py-4
-            "
+            mt-4 flex items-center justify-between
+            rounded-2xl border
+            px-3.5 py-3.5
+            md:px-8 md:py-4
+"
           >
 
             {/* ── logo ── */}
