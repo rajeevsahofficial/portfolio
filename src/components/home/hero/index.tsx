@@ -24,9 +24,7 @@ import {
   SiReact,
 } from "react-icons/si";
 
-/* =========================================================
-   TYPES
-========================================================= */
+
 
 type Tool = {
   name: string;
@@ -135,8 +133,8 @@ function OrbitRing({
         ease: "linear",
       }}
       className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full ${dashed
-        ? "border border-dashed border-white/[0.065]"
-        : "border border-white/[0.075]"
+        ? "border border-dashed border-[#38BDF8]/[0.08]"
+        : "border border-[#8B5CF6]/[0.10]"
         }`}
       style={{
         width: size,
@@ -153,8 +151,8 @@ function OrbitRing({
           -translate-x-1/2
           -translate-y-1/2
           rounded-full
-          bg-[#c7a7ff]
-          shadow-[0_0_12px_#c7a7ff]
+          bg-[#8B5CF6]
+          shadow-[0_0_12px_#8B5CF6]
         "
       />
     </motion.div>
@@ -245,7 +243,7 @@ function ToolNode({
             rounded-full
             border
             border-white/[0.10]
-            bg-[#0b0b0d]/95
+            bg-[#101216]/95
             shadow-[0_10px_35px_rgba(0,0,0,0.55)]
             backdrop-blur-xl
 
@@ -295,7 +293,7 @@ function ToolNode({
             text-white/25
             transition-colors
             duration-300
-            group-hover:text-white/70
+            group-hover:text-[#F5F7FA]/90
 
             sm:text-[7px]
           "
@@ -384,7 +382,7 @@ export default function Hero() {
         relative
         min-h-screen
         overflow-hidden
-        bg-[#080808]
+        bg-[#08090B]
         text-white
       "
     >
@@ -411,7 +409,7 @@ export default function Hero() {
           "
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+              "linear-gradient(rgba(139,92,246,0.42) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.32) 1px, transparent 1px)",
             backgroundSize: "90px 90px",
           }}
         />
@@ -494,13 +492,33 @@ export default function Hero() {
                 Creating
                 <br />
 
-                <span className="text-white/20">
+                <span
+                  className="
+                    bg-gradient-to-r
+                    from-white/20
+                    via-white/35
+                    to-[#38BDF8]/40
+                    bg-clip-text
+                    text-transparent
+                  "
+                >
                   Digital
                 </span>
 
                 <br />
 
-                Experiences
+                <span
+                  className="
+                    bg-gradient-to-r
+                    from-[#8B5CF6]
+                    via-[#38BDF8]
+                    to-[#34D399]
+                    bg-clip-text
+                    text-transparent
+                  "
+                >
+                  Experiences
+                </span>
               </motion.h1>
             </div>
 
@@ -524,7 +542,7 @@ export default function Hero() {
                 max-w-lg
                 text-[12px]
                 leading-7
-                text-white/35
+                text-[#9BA3B4]/70
 
                 sm:text-[13px]
 
@@ -585,13 +603,14 @@ export default function Hero() {
                   transition-all
                   duration-500
 
-                  hover:border-[#c7a7ff]/40
-                  hover:bg-white/[0.07]
+                  hover:border-[#8B5CF6]/55
+                  hover:bg-[#8B5CF6]/[0.08]
+                  hover:shadow-[0_0_35px_rgba(139,92,246,0.16)]
                   hover:text-white
 
                   focus-visible:outline-none
                   focus-visible:ring-2
-                  focus-visible:ring-[#c7a7ff]/50
+                  focus-visible:ring-[#8B5CF6]/60
                 "
               >
                 <span className="relative z-10">
@@ -603,7 +622,7 @@ export default function Hero() {
                   className="
                     relative
                     z-10
-                    text-[#c7a7ff]
+                    text-[#38BDF8]
                     transition-transform
                     duration-500
                     group-hover:translate-x-1
@@ -647,7 +666,7 @@ export default function Hero() {
 
                   focus-visible:outline-none
                   focus-visible:ring-2
-                  focus-visible:ring-[#c7a7ff]/40
+                  focus-visible:ring-[#8B5CF6]/40
                 "
               >
                 <Mail
@@ -698,10 +717,10 @@ export default function Hero() {
                     block
                     text-xl
                     tracking-[-0.04em]
-                    text-white/80
+                    text-[#F5F7FA]/90
                   "
                 >
-                  3+
+                  <span className="text-[#8B5CF6]">3+</span>
                 </span>
 
                 <span
@@ -732,10 +751,10 @@ export default function Hero() {
                     block
                     text-xl
                     tracking-[-0.04em]
-                    text-white/80
+                    text-[#F5F7FA]/90
                   "
                 >
-                  20+
+                  <span className="text-[#38BDF8]">20+</span>
                 </span>
 
                 <span
@@ -766,10 +785,10 @@ export default function Hero() {
                     block
                     text-xl
                     tracking-[-0.04em]
-                    text-white/80
+                    text-[#F5F7FA]/90
                   "
                 >
-                  ∞
+                  <span className="text-[#34D399]">∞</span>
                 </span>
 
                 <span
@@ -876,7 +895,7 @@ export default function Hero() {
                   absolute
                   -inset-16
                   rounded-full
-                  bg-[#8b5cf6]/20
+                  bg-gradient-to-br from-[#8B5CF6]/25 via-[#38BDF8]/10 to-[#34D399]/10
                   blur-[65px]
 
                   md:-inset-20
@@ -901,9 +920,9 @@ export default function Hero() {
                   justify-center
                   rounded-full
                   border
-                  border-[#c7a7ff]/25
-                  bg-[#09090b]/95
-                  shadow-[0_0_80px_rgba(139,92,246,0.08)]
+                  border-[#8B5CF6]/35
+                  bg-[#101216]/95
+                  shadow-[0_0_90px_rgba(139,92,246,0.12),0_0_140px_rgba(56,189,248,0.06)]
                   backdrop-blur-xl
 
                   sm:h-[175px]
@@ -961,8 +980,8 @@ export default function Hero() {
                       w-1.5
                       -translate-x-1/2
                       rounded-full
-                      bg-[#c7a7ff]
-                      shadow-[0_0_15px_#c7a7ff]
+                      bg-[#8B5CF6]
+                      shadow-[0_0_15px_#8B5CF6]
                     "
                   />
                 </motion.div>
@@ -982,7 +1001,7 @@ export default function Hero() {
                       text-[8px]
                       uppercase
                       tracking-[0.3em]
-                      text-white/30
+                      text-[#9BA3B4]/65
 
                       sm:text-[9px]
                     "
@@ -1009,7 +1028,7 @@ export default function Hero() {
                       my-4
                       h-px
                       w-7
-                      bg-[#c7a7ff]
+                      bg-gradient-to-r from-[#8B5CF6] via-[#38BDF8] to-[#34D399]
 
                       sm:my-5
                       sm:w-9
@@ -1021,7 +1040,7 @@ export default function Hero() {
                       text-[6px]
                       uppercase
                       tracking-[0.3em]
-                      text-white/30
+                      text-[#9BA3B4]/65
 
                       sm:text-[7px]
                     "
@@ -1030,7 +1049,7 @@ export default function Hero() {
                       className="
                         block
                         text-[8px]
-                        text-white/30
+                        text-[#9BA3B4]/65
 
                         sm:text-[9px]
                       "
